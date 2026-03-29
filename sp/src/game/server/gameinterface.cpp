@@ -89,6 +89,7 @@
 #include "tier3/tier3.h"
 #include "serverbenchmark_base.h"
 #include "querycache.h"
+#include "util_timescale.h"
 
 
 #ifdef TF_DLL
@@ -752,7 +753,6 @@ void CServerGameDLL::PostInit()
 
 void CServerGameDLL::DLLShutdown( void )
 {
-
 	// Due to dependencies, these are not autogamesystems
 	ModelSoundsCacheShutdown();
 
@@ -862,6 +862,8 @@ bool CServerGameDLL::GameInit( void )
 		gameeventmanager->FireEvent( event );
 	}
 
+	TimeScale_Initialize();
+
 	return true;
 }
 
@@ -869,6 +871,8 @@ bool CServerGameDLL::GameInit( void )
 // NOT on level transitions within a game
 void CServerGameDLL::GameShutdown( void )
 {
+	TimeScale_Shutdown();
+
 	ResetGlobalState();
 }
 

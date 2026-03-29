@@ -101,6 +101,7 @@ class ConCommandBase
 	friend class CCvar;
 	friend class ConVar;
 	friend class ConCommand;
+	friend class TimeScale;
 	friend void ConVar_Register( int nCVarFlag, IConCommandBaseAccessor *pAccessor );
 	friend void ConVar_PublishToVXConsole();
 
@@ -261,6 +262,7 @@ inline const char *CCommand::operator[]( int nIndex ) const
 class ConCommand : public ConCommandBase
 {
 friend class CCvar;
+friend class TimeScale;
 
 public:
 	typedef ConCommandBase BaseClass;
@@ -283,7 +285,7 @@ public:
 	// Invoke the function
 	virtual void Dispatch( const CCommand &command );
 
-private:
+protected:
 	// NOTE: To maintain backward compat, we have to be very careful:
 	// All public virtual methods must appear in the same order always
 	// since engine code will be calling into this code, which *does not match*
@@ -319,6 +321,7 @@ class ConVar : public ConCommandBase, public IConVar
 {
 friend class CCvar;
 friend class ConVarRef;
+friend class TimeScale;
 
 public:
 	typedef ConCommandBase BaseClass;
