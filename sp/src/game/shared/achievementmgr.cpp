@@ -42,6 +42,7 @@
 #endif  // _X360
 #include "engine/imatchmaking.h"
 #include "tier0/vprof.h"
+#include "util_timescale.h"
 
 #if defined(TF_DLL) || defined(TF_CLIENT_DLL)
 #include "tf_gamerules.h"
@@ -427,10 +428,6 @@ void CAchievementMgr::InitializeAchievements()
 	PostInit();
 }
 
-#ifdef CLIENT_DLL
-extern const ConVar *sv_cheats;
-#endif
-
 #ifdef GAME_DLL
 void CAchievementMgr::FrameUpdatePostEntityThink()
 {
@@ -443,18 +440,15 @@ void CAchievementMgr::FrameUpdatePostEntityThink()
 //-----------------------------------------------------------------------------
 void CAchievementMgr::Update( float frametime )
 {
-#ifdef CLIENT_DLL
-	if ( !sv_cheats )
-	{
-		sv_cheats = cvar->FindVar( "sv_cheats" );
-	}
-#endif
-
 #ifndef _DEBUG
 	// keep track if cheats have ever been turned on during this level
 	if ( !WereCheatsEverOn() )
 	{
-		if ( sv_cheats && sv_cheats->GetBool() )
+#ifdef CLIENT_DLL
+		if ( net_sv_cheats.GetBool() )
+#else
+		if ( TimeScale_AreCheatsAllowed() )
+#endif
 		{
 			m_bCheatsEverOn = true;
 		}

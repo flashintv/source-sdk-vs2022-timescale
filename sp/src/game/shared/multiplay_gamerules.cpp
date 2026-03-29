@@ -37,6 +37,7 @@
 	#include "team.h"
 	#include "usermessages.h"
 	#include "tier0/icommandline.h"
+	#include "util_timescale.h"
 
 #ifdef NEXT_BOT
 	#include "NextBotManager.h"
@@ -1731,7 +1732,7 @@ ConVarRef suitcharger( "sk_suitcharger" );
 
 	bool CMultiplayRules::IsLoadingBugBaitReport()
 	{
-		return ( !engine->IsDedicatedServer()&& CommandLine()->CheckParm( "-bugbait" ) && sv_cheats->GetBool() );
+		return ( !engine->IsDedicatedServer()&& CommandLine()->CheckParm( "-bugbait" ) && TimeScale_AreCheatsAllowed() );
 	}
 
 	void CMultiplayRules::HaveAllPlayersSpeakConceptIfAllowed( int iConcept, int iTeam /* = TEAM_UNASSIGNED */, const char *modifiers /* = NULL */ )

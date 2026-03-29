@@ -64,17 +64,12 @@ float ScaleFOVByWidthRatio( float fovDegrees, float ratio );
 
 extern ConVar mat_wireframe;
 
-extern const ConVar *sv_cheats;
+extern ConVar net_sv_cheats;
 
 
 static inline int WireFrameMode( void )
 {
-	if ( !sv_cheats )
-	{
-		sv_cheats = cvar->FindVar( "sv_cheats" );
-	}
-
-	if ( sv_cheats && sv_cheats->GetBool() )
+	if ( net_sv_cheats.GetBool() )
 		return mat_wireframe.GetInt();
 	else
 		return 0;
@@ -82,12 +77,7 @@ static inline int WireFrameMode( void )
 
 static inline bool ShouldDrawInWireFrameMode( void )
 {
-	if ( !sv_cheats )
-	{
-		sv_cheats = cvar->FindVar( "sv_cheats" );
-	}
-
-	if ( sv_cheats && sv_cheats->GetBool() )
+	if ( net_sv_cheats.GetBool() )
 		return ( mat_wireframe.GetInt() != 0 );
 	else
 		return false;

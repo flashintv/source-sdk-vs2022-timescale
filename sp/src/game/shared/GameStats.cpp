@@ -32,7 +32,6 @@
 #include "vgui_int.h"
 #include "igameresources.h"
 #include "voice_status.h"
-extern const ConVar *sv_cheats;
 #if !defined(NO_STEAM)
 #include "steam/steam_api.h"
 #endif
@@ -45,6 +44,8 @@ extern const ConVar *sv_cheats;
 #include "steamworks_gamestats.h"
 #endif
 #endif
+
+#include "util_timescale.h"
 
 // NOTE: This has to be the last file included!
 #include "tier0/memdbgon.h"
@@ -1132,11 +1133,7 @@ bool CBaseGameStats_Driver::AddBaseDataForSend( KeyValues *pKV, StatSendType_t s
 			// We need to filter out client side dev work from playtest work for the stat reporting.
 			// The simplest way is to check for sv_cheats, since we also do NOT want client stat reports
 			// where the player has cheated.
-			if ( NULL != sv_cheats )
-			{
-				int iCheats = sv_cheats->GetInt();
-				pKV->SetInt( "Cheats", iCheats );
-			}
+			pKV->SetInt( "Cheats", net_sv_cheats.GetInt() );
 
 			int mapTime = gpGlobals->realtime - m_flLevelStartTime;
 			pKV->SetInt( "MapTime", mapTime );

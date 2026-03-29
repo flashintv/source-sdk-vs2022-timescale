@@ -663,6 +663,7 @@ $Project
 			$File	"game_controls\IconPanel.cpp"
 		}
 
+		$File	"$SRCDIR\game\shared\util_timescale.cpp"
 	}
 
 	$Folder	"MP3" [$WIN32||$POSIX]
@@ -881,6 +882,8 @@ $Project
 		$File	"weapons_resource.h"
 		$File	"vgui_video.h"
 		$File   "vgui_video_player.h"
+		
+		$File	"$SRCDIR\game\shared\util_timescale.h"
 	}
 
 	$Folder	"Public Header Files"

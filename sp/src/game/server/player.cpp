@@ -69,6 +69,7 @@
 #include "dt_utlvector_send.h"
 #include "vote_controller.h"
 #include "ai_speech.h"
+#include "util_timescale.h"
 
 #if defined USES_ECON_ITEMS
 #include "econ_wearable.h"
@@ -3447,7 +3448,7 @@ void CBasePlayer::ProcessUsercmds( CUserCmd *cmds, int numcmds, int totalcmds,
 
 		// If no clipping and cheats enabled and sv_noclipduringpause enabled, then don't zero out movement part of CUserCmd
 		if ( GetMoveType() == MOVETYPE_NOCLIP &&
-			sv_cheats->GetBool() && 
+			TimeScale_AreCheatsAllowed() &&
 			sv_noclipduringpause.GetBool() )
 		{
 			clear_angles = false;
@@ -5885,7 +5886,7 @@ void CBasePlayer::ImpulseCommands( )
 		break;
 
 	case 200:
-		if ( sv_cheats->GetBool() )
+		if ( TimeScale_AreCheatsAllowed() )
 		{
 			CBaseCombatWeapon *pWeapon;
 
@@ -6092,7 +6093,7 @@ static ConCommand ch_createairboat( "ch_createairboat", CC_CH_CreateAirboat, "Sp
 void CBasePlayer::CheatImpulseCommands( int iImpulse )
 {
 #if !defined( HLDEMO_BUILD )
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 	{
 		return;
 	}
@@ -6304,7 +6305,7 @@ bool CBasePlayer::ClientCommand( const CCommand &args )
 #ifdef _DEBUG
 	if( stricmp( cmd, "test_SmokeGrenade" ) == 0 )
 	{
-		if ( sv_cheats && sv_cheats->GetBool() )
+		if ( TimeScale_AreCheatsAllowed() )
 		{
 			ParticleSmokeGrenade *pSmoke = dynamic_cast<ParticleSmokeGrenade*>( CreateEntityByName(PARTICLESMOKEGRENADE_ENTITYNAME) );
 			if ( pSmoke )

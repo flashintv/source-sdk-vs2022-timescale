@@ -35,6 +35,7 @@
 #include "datacache/imdlcache.h"
 #include "basemultiplayerplayer.h"
 #include "voice_gamemgr.h"
+#include "util_timescale.h"
 
 #ifdef TF_DLL
 #include "tf_player.h"
@@ -640,7 +641,7 @@ static ConCommand drawcross("drawcross", CC_DrawCross, "Draws a cross at the giv
 //------------------------------------------------------------------------------
 void kill_helper( const CCommand &args, bool bExplode )
 {
-	if ( args.ArgC() > 1 && sv_cheats->GetBool() )
+	if ( args.ArgC() > 1 && TimeScale_AreCheatsAllowed() )
 	{
 		// Find the matching netname
 		for ( int i = 1; i <= gpGlobals->maxClients; i++ )
@@ -791,7 +792,7 @@ CON_COMMAND( give, "Give item to player.\n\tArguments: <item_name>" )
 {
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
 	if ( pPlayer 
-		&& (gpGlobals->maxClients == 1 || sv_cheats->GetBool()) 
+		&& (gpGlobals->maxClients == 1 || TimeScale_AreCheatsAllowed())
 		&& args.ArgC() >= 2 )
 	{
 		char item_to_give[ 256 ];
@@ -834,7 +835,7 @@ CON_COMMAND( give, "Give item to player.\n\tArguments: <item_name>" )
 CON_COMMAND( fov, "Change players FOV" )
 {
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() );
-	if ( pPlayer && sv_cheats->GetBool() )
+	if ( pPlayer && TimeScale_AreCheatsAllowed() )
 	{
 		if ( args.ArgC() > 1 )
 		{
@@ -1071,7 +1072,7 @@ void EnableNoClip( CBasePlayer *pPlayer )
 
 void CC_Player_NoClip( void )
 {
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 		return;
 
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
@@ -1131,7 +1132,7 @@ static ConCommand noclip("noclip", CC_Player_NoClip, "Toggle. Player becomes non
 //------------------------------------------------------------------------------
 void CC_God_f (void)
 {
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 		return;
 
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
@@ -1164,7 +1165,7 @@ static ConCommand god("god", CC_God_f, "Toggle. Player becomes invulnerable.", F
 //------------------------------------------------------------------------------
 CON_COMMAND_F( setpos, "Move player to specified origin (must have sv_cheats).", FCVAR_CHEAT )
 {
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 		return;
 
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
@@ -1198,7 +1199,7 @@ CON_COMMAND_F( setpos, "Move player to specified origin (must have sv_cheats).",
 //------------------------------------------------------------------------------
 void CC_setang_f (const CCommand &args)
 {
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 		return;
 
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
@@ -1239,7 +1240,7 @@ static float GetHexFloat( const char *pStr )
 //------------------------------------------------------------------------------
 CON_COMMAND_F( setpos_exact, "Move player to an exact specified origin (must have sv_cheats).", FCVAR_CHEAT )
 {
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 		return;
 
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
@@ -1273,7 +1274,7 @@ CON_COMMAND_F( setpos_exact, "Move player to an exact specified origin (must hav
 
 CON_COMMAND_F( setang_exact, "Snap player eyes and orientation to specified pitch yaw <roll:optional> (must have sv_cheats).", FCVAR_CHEAT )
 {
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 		return;
 
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
@@ -1307,7 +1308,7 @@ CON_COMMAND_F( setang_exact, "Snap player eyes and orientation to specified pitc
 //------------------------------------------------------------------------------
 void CC_Notarget_f (void)
 {
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 		return;
 
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
@@ -1331,7 +1332,7 @@ ConCommand notarget("notarget", CC_Notarget_f, "Toggle. Player becomes hidden to
 //------------------------------------------------------------------------------
 void CC_HurtMe_f(const CCommand &args)
 {
-	if ( !sv_cheats->GetBool() )
+	if ( !TimeScale_AreCheatsAllowed() )
 		return;
 
 	CBasePlayer *pPlayer = ToBasePlayer( UTIL_GetCommandClient() ); 
@@ -1481,7 +1482,7 @@ void ClientCommand( CBasePlayer *pPlayer, const CCommand &args )
 	
 	if ( FStrEq( pCmd, "killtarget" ) )
 	{
-		if ( g_pDeveloper->GetBool() && sv_cheats->GetBool() && UTIL_IsCommandIssuedByServerAdmin() )
+		if ( g_pDeveloper->GetBool() && TimeScale_AreCheatsAllowed() && UTIL_IsCommandIssuedByServerAdmin() )
 		{
 			ConsoleKillTarget( pPlayer, args[1] );
 		}
@@ -1497,7 +1498,7 @@ void ClientCommand( CBasePlayer *pPlayer, const CCommand &args )
 	} 
 	else if ( FStrEq( pCmd, "te" ) )
 	{
-		if ( sv_cheats->GetBool() && UTIL_IsCommandIssuedByServerAdmin() )
+		if ( TimeScale_AreCheatsAllowed() && UTIL_IsCommandIssuedByServerAdmin() )
 		{
 			if ( FStrEq( args[1], "stop" ) )
 			{

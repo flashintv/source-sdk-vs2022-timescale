@@ -782,7 +782,7 @@ $Project
 			$File	"$SRCDIR\game\shared\usermessages.cpp"
 		}
 
-		$File	"util_timescale.cpp"
+		$File	"$SRCDIR\game\shared\util_timescale.cpp"
 	}
 
 	$Folder	"Header Files"
@@ -997,7 +997,8 @@ $Project
 		$File	"$SRCDIR\game\shared\econ\ihasowner.h"
 		//Haptics
 		$File	"$SRCDIR\public\haptics\haptic_utils.h"	[$WIN32]
-		$File	"util_timescale.h"
+		
+		$File	"$SRCDIR\game\shared\util_timescale.h"
 	}
 
 	$Folder	"Tools Framework"

@@ -14,6 +14,7 @@
 #include "movehelper_server.h"
 #include "iservervehicle.h"
 #include "tier0/vprof.h"
+#include "util_timescale.h"
 
 // memdbgon must be the last include file in a .cpp file!!!
 #include "tier0/memdbgon.h"
@@ -354,7 +355,7 @@ void CPlayerMove::RunCommand ( CBasePlayer *player, CUserCmd *ucmd, IMoveHelper 
 		// If no clipping and cheats enabled and noclipduring game enabled, then leave
 		//  forwardmove and angles stuff in usercmd
 		if ( player->GetMoveType() == MOVETYPE_NOCLIP &&
-			 sv_cheats->GetBool() && 
+			TimeScale_AreCheatsAllowed() &&
 			 sv_noclipduringpause.GetBool() )
 		{
 			gpGlobals->frametime = TICK_INTERVAL;
